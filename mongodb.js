@@ -70,12 +70,39 @@ MongoClient.connect(connectionURL, {useNewUrlParser: true}, (error, client) => {
     //     console.log("Result: ", result.ops)
     // });
 
-    db.collection('tasks').findOne({ _id: new ObjectID("60b35f8c83432a0ecf173d03")}, (error, data) => {
-        if (error){
-            return console.log(error)
+    // db.collection('tasks').findOne({ _id: new ObjectID("60b35f8c83432a0ecf173d03")}, (error, data) => {
+    //     if (error){
+    //         return console.log(error)
+    //     }
+    //     console.log(data);
+    // })
+
+    // db.collection('tasks').updateOne({
+    //     _id: new ObjectID('60b35f8c83432a0ecf173d01')
+    // },
+    // {
+    //     $inc: {
+    //         age: 3
+    //     }
+    // }).then((result) => {
+    //     console.log(result)
+    // }).catch((error) => {
+    //     console.log(error)
+    // })
+
+    db.collection('tasks').updateMany({
+        completed: false
+    },
+    {
+        $set: {
+            completed: true
         }
-        console.log(data);
+    }).then((result) => {
+        console.log(result)
+    }).catch((error) => {
+        console.log(error)
     })
+
 
     client.close()
 })
