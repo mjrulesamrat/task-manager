@@ -1,9 +1,7 @@
 // CRUD operations
 
-const mongodb = require('mongodb')
+const { MongoClient, ObjectID } = require('mongodb')
 require('dotenv').config()
-
-const MongoClient = mongodb.MongoClient
 
 const db_username = process.env.MONGO_DB_USERNAME
 const db_password = process.env.MONGO_DB_PASSWORD
@@ -24,53 +22,60 @@ MongoClient.connect(connectionURL, {useNewUrlParser: true}, (error, client) => {
 
     const db = client.db(databaseName)
 
-    db.collection('users').insertOne({
-        name: "Jay Modi",
-        age: 29,
-    }, (error, result) => {
-        if (error){
-            return console.log("Unable to insert user")
-        }
-        console.log("Result: ", result.ops)
-    });
+    // db.collection('users').insertOne({
+    //     name: "Jay Modi",
+    //     age: 29,
+    // }, (error, result) => {
+    //     if (error){
+    //         return console.log("Unable to insert user")
+    //     }
+    //     console.log("Result: ", result.ops)
+    // });
 
-    db.collection('users').insertMany([
-        {
-            name: "Jen",
-            age: 28,
-        },
-        {
-            name: "Professor",
-            age: 37
-        }
-    ], (error, result) => {
-        if (error){
-            return console.log("Unable to insert users")
-        }
-        console.log("Result: ", result.ops)
-    });
+    // db.collection('users').insertMany([
+    //     {
+    //         name: "Jen",
+    //         age: 28,
+    //     },
+    //     {
+    //         name: "Professor",
+    //         age: 37
+    //     }
+    // ], (error, result) => {
+    //     if (error){
+    //         return console.log("Unable to insert users")
+    //     }
+    //     console.log("Result: ", result.ops)
+    // });
 
-    console.log("Users inserted successfully!")
+    // console.log("Users inserted successfully!")
 
-    db.collection('tasks').insertMany([
-        {
-            description: "Do something",
-            completed: false,
-        },
-        {
-            description: "Do another thing",
-            completed: true,
-        },
-        {
-            description: "work on this course",
-            completed: true,
-        }
-    ], (error, result) => {
+    // db.collection('tasks').insertMany([
+    //     {
+    //         description: "Do something",
+    //         completed: false,
+    //     },
+    //     {
+    //         description: "Do another thing",
+    //         completed: true,
+    //     },
+    //     {
+    //         description: "work on this course",
+    //         completed: true,
+    //     }
+    // ], (error, result) => {
+    //     if (error){
+    //         return console.log("Unable to create tasks")
+    //     }
+    //     console.log("Result: ", result.ops)
+    // });
+
+    db.collection('tasks').findOne({ _id: new ObjectID("60b35f8c83432a0ecf173d03")}, (error, data) => {
         if (error){
-            return console.log("Unable to create tasks")
+            return console.log(error)
         }
-        console.log("Result: ", result.ops)
-    });
+        console.log(data);
+    })
 
     client.close()
 })
