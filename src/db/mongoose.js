@@ -17,23 +17,23 @@ mongoose.connect(connectionURL, {
     useCreateIndex: true
 })
 
-const User = mongoose.model('User', {
-    name: {
+const Task = mongoose.model('Task', {
+    description: {
         type: String
     },
-    age: {
-        type: Number
+    completed: {
+        type: Boolean
     }
 })
 
-const user1 = new User({
-    name: "Jumbo",
-    age: 30
+const task1 = new Task({
+    description: "Learn new technology",
+    completed: true
 })
 
 
-user1.save().then(() => {
-    console.log(user1)
+task1.save().then(() => {
+    console.log(task1)
 }).catch((error) => {
     console.log(error)
 })
