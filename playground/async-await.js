@@ -10,7 +10,9 @@ const doWork = async () => {
     // throw new Error("Something went wrong!!")
     // return "jay modi"
     const sum = await add(1, 2)
-    return sum
+    const sum2 = await add(sum, 2)
+    const sum3 = await add(sum2, 2)
+    return sum3
 }
 
 doWork().then((result) => {
