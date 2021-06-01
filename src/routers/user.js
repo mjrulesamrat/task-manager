@@ -2,9 +2,10 @@ const express = require('express')
 const router = new express.Router()
 
 const User = require('../models/user')
+const authMiddleware = require('../middleware/auth')
+
 
 router.post('/users', async (req, res) => {
-    console.log(req.body)
     const user = new User(req.body)
 
     try {
@@ -21,7 +22,6 @@ router.post('/users/login', async (req, res) => {
     try {
         const user = await User.findByCredentials(req.body.email, req.body.password)
         const token = await user.generateAuthToken()
-        console.log(token, "<---")
         res.send({user, token})
     } catch (e) {
         console.log(e)
@@ -29,7 +29,7 @@ router.post('/users/login', async (req, res) => {
     }
 })
 
-router.get('/users', async (req, res) => {
+router.get('/users', authMiddleware, async (req, res) => {
 
     try {
         const users = await User.find({})
@@ -39,7 +39,7 @@ router.get('/users', async (req, res) => {
     }
 })
 
-router.get('/users/:id', async (req, res) => {
+router.get('/users/:id', authMiddleware, async (req, res) => {
     const _id = req.params.id
 
     try {
@@ -54,7 +54,7 @@ router.get('/users/:id', async (req, res) => {
 })
 
 
-router.patch('/users/:id', async (req, res) => {
+router.patch('/users/:id', authMiddleware, async (req, res) => {
     const updates = Object.keys(req.body)
     const allowedUpdates = ['name', 'email', 'password', 'age']
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update))

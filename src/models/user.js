@@ -53,10 +53,8 @@ const userSchema = new mongoose.Schema({
 userSchema.methods.generateAuthToken = async function () {
     const user = this
     const token = jwt.sign({ _id: user._id.toString() }, process.env.JWT_SECRET)
-    console.log(token, "<--- Token")
     user.tokens = user.tokens.concat({ token })
     await user.save()
-
     return token
 }
 
@@ -69,7 +67,6 @@ userSchema.statics.findByCredentials = async (email, password) => {
     }
 
     const isMatch = await bcrypt.compare(password, user.password)
-    console.log(isMatch)
     if (!isMatch) {
         throw new Error('Unable to login')
     }
@@ -81,7 +78,6 @@ userSchema.statics.findByCredentials = async (email, password) => {
 userSchema.pre('save', async function (next) {
     const user = this
 
-    console.log("Just before save")
     if (user.isModified('password')) {
         user.password = await bcrypt.hash(user.password, 8)
     }
